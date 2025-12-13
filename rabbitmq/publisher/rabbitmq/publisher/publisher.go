@@ -25,6 +25,17 @@ func DirectExchangeNormalQueue(ctx context.Context, log *logger.Logger) error {
 			Name: "DirectExchange-normalQueue",
 			Type: utils.DIRECT,
 		}
+
+		deadEx := rabbitmq.Exchange{
+			Name: "DeadExchange",
+			Type: utils.DIRECT,
+		}
+
+		dlq := rabbitmq.Queue{
+			Name:       "dead-q",
+			RoutingKey: "dq",
+		}
+
 		q1 := rabbitmq.Queue{
 			Name:       "normalQ1",
 			RoutingKey: "q1",
@@ -32,6 +43,10 @@ func DirectExchangeNormalQueue(ctx context.Context, log *logger.Logger) error {
 		q2 := rabbitmq.Queue{
 			Name:       "normalQ2",
 			RoutingKey: "q2",
+			Args: amqp091.Table{
+				"x-dead-letter-exchange":    deadEx.Name,
+				"x-dead-letter-routing-key": dlq.RoutingKey,
+			},
 		}
 
 		rbmq := rabbitmq.Rabbitmq{
@@ -58,11 +73,32 @@ func DirectExchangeNormalQueue(ctx context.Context, log *logger.Logger) error {
 			return err
 		}
 
+		if err := deadEx.CreateExchange(ch); err != nil {
+			log.Error("error creating exchange")
+			return err
+		}
+
 		for _, q := range rbmq.Q {
 			if _, err := q.CreateQueue(ch); err != nil {
 				log.Error("error creating queue")
 				return err
 			}
+		}
+
+		if _, err := dlq.CreateQueue(ch); err != nil {
+			log.Error("error creating exchange")
+			return err
+		}
+
+		if err := ch.QueueBind(
+			dlq.Name,
+			dlq.RoutingKey,
+			deadEx.Name,
+			false,
+			nil,
+		); err != nil {
+			log.Error("error binding dead queue")
+			return err
 		}
 
 		if err := rbmq.Bind(ch); err != nil {

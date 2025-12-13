@@ -25,13 +25,13 @@ func main() {
 	signal.Notify(sigChan, syscall.SIGTERM, syscall.SIGKILL)
 
 	log.Info("Starting rabbitmq Publisher")
-	// if err := publisher.DirectExchangeNormalQueue(context, log); err != nil {
-	// 	log.Fatal(err.Error())
-	// }
-
-	if err := publisher.TopicExchangeQuorumQueue(context, log); err != nil {
+	if err := publisher.DirectExchangeNormalQueue(context, log); err != nil {
 		log.Fatal(err.Error())
 	}
+
+	// if err := publisher.TopicExchangeQuorumQueue(context, log); err != nil {
+	// 	log.Fatal(err.Error())
+	// }
 
 	// if err := publisher.FanoutExchangeNormalQueue(context, log); err != nil {
 	// 	log.Fatal(err.Error())
