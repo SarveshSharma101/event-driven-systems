@@ -122,6 +122,9 @@ func DirectExchangeNormalQueue(ctx context.Context, log *logger.Logger) error {
 
 		for {
 			select {
+			case <-ctx.Done():
+				log.Info("context cancelled")
+				return nil
 			case m := <-msgs1:
 				fmt.Printf("message from q1: %v", m)
 				m.Ack(false)
@@ -226,6 +229,9 @@ func TopicExchangeQuorumQueue(ctx context.Context, log *logger.Logger) error {
 
 		for {
 			select {
+			case <-ctx.Done():
+				log.Info("context cancelled")
+				return nil
 			case m := <-msgs1:
 				fmt.Printf("message from q1: %v", m)
 				m.Ack(false)
@@ -326,6 +332,9 @@ func FanoutExchangeNormalQueue(ctx context.Context, log *logger.Logger) error {
 
 		for {
 			select {
+			case <-ctx.Done():
+				log.Info("context cancelled")
+				return nil
 			case m := <-msgs1:
 				fmt.Printf("message from q1: %v", m)
 				m.Ack(false)
@@ -434,6 +443,9 @@ func HeaderExchangeNormalQueue(ctx context.Context, log *logger.Logger) error {
 
 		for {
 			select {
+			case <-ctx.Done():
+				log.Info("context cancelled")
+				return nil
 			case m := <-msgs1:
 				fmt.Printf("message from q1: %v", m)
 				m.Ack(false)
