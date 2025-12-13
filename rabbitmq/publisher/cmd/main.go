@@ -29,17 +29,17 @@ func main() {
 		log.Fatal(err.Error())
 	}
 
-	// if err := publisher.TopicExchangeQuorumQueue(context, log); err != nil {
-	// 	log.Fatal(err.Error())
-	// }
+	if err := publisher.TopicExchangeQuorumQueue(context, log); err != nil {
+		log.Fatal(err.Error())
+	}
 
-	// if err := publisher.FanoutExchangeNormalQueue(context, log); err != nil {
-	// 	log.Fatal(err.Error())
-	// }
+	if err := publisher.FanoutExchangeNormalQueue(context, log); err != nil {
+		log.Fatal(err.Error())
+	}
 
-	// if err := publisher.HeaderExchangeNormalQueue(context, log); err != nil {
-	// 	log.Fatal(err.Error())
-	// }
+	if err := publisher.HeaderExchangeNormalQueue(context, log); err != nil {
+		log.Fatal(err.Error())
+	}
 	<-sigChan
 	cancel()
 
