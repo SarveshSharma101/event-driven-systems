@@ -46,6 +46,9 @@ sleep_progress() {
   echo -e " ${GREEN}done!${RESET}"
 }
 
+
+kubectl delete -f "$YAML_DIR/kafka-topic.yaml" -n "$NAMESPACE"
+
 # === Delete Kafka Cluster ===
 banner "Deleting Kafka Cluster"
 if kubectl get ns "$NAMESPACE" >/dev/null 2>&1; then

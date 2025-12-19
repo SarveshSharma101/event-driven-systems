@@ -74,5 +74,5 @@ sleep_progress 10 "Sleeping before checking pods..."
 kubectl apply -f "$YAML_DIR/kafka-topic.yaml" -n $NAMESPACE
 
 echo
-banner "port forwarding rabbitmq svc, access rabbitmq broker at localhost:9092"
-kubectl port-forward -n $NAMESPACE svc/kafka-cluster-kafka-bootstrap 9092:9092
+banner "port forwarding rabbitmq svc, access rabbitmq broker at localhost:19092"
+kubectl port-forward pod/kafka-cluster-dual-role-0 19092:9094 -n kafka
